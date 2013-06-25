@@ -1,0 +1,14 @@
+This codes just wraps a parsing error into a runtime exception in different ways. 
+None of them provides really good information to the caller. The first just loses 
+all information. The second may do anything depending on what information toString() 
+produces. The default toString() implementation lists the fully qualified exception 
+name followed by the message. Nesting many exceptions will produce an unwieldy long 
+and ugly string, unsuitable for a user. The third just preserves the message, which 
+is better than nothing. The last preserves the cause, but sets the message of the runtime 
+exception to toString() of its cause (see above). The most useful and readable version is to 
+propagate only the cause message in the runtime exception and pass the original exception as the cause:
+
+try {
+} catch(ParseException e) {
+  throw new RuntimeException(e.getMessage(), e);
+}
